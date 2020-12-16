@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+            
+        h2 {
+            background: #efefef;
+            margin: 10px;
+        }
+        
+        .toPic {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>From HTML</h2>
+    <div class="test">
+        <!-- <div style="background:green;">
+            <div style="background:blue;">
+                <div style="background:yellow;">
+                    <div style="background:orange;">
+                        33333333333333333333333333333333
+                    </div>
+                </div>
+
+            </div>
+
+        </div> -->
+        <img src="6373958482_16072795302870186.jpg" crossorigin="anonymous" width="320px" height="240px"/>
+    </div>
+    <h2 class="toCanvas"> <a href="javascript:void(0);">To canvas </a></h2>
+    <h2 class="toPic"><a href="javascript:void(0);"> To Image </a></h2>
+    <h5>
+        <label for="imgW">Width :</label>
+        <input type="number" value="" id="imgW" placeholder="Width" />
+        <label for="imgH">Height :</label>
+        <input type="number" value="" id="imgH" placeholder="Height" />
+        <label for="imgFileName">File Name :</label>
+        <input type="text" placeholder="File Name" id="imgFileName" />
+        <select id="sel">
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                    <option value="bmp">bmp</option>
+                </select>
+        <button id="save">Save</button>
+    </h5>
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="html2canvas.min.js"></script>
+    <script type="text/javascript" src="canvas2image.js"></script>
+    <script type="text/javascript">
+        var test = $(".test").get(0); 
+        var imageCanvas=null;
+     
+            
+        $('.toCanvas').click(function(e) {
+            // html2canvas
+            html2canvas(test).then(function(canvas) {
+                imageCanvas=canvas;
+                var canvasWidth = canvas.width;            
+                var canvasHeight = canvas.height;
+              
+                $('.toCanvas').after(canvas);
+             
+                $('.toPic').show(1000);
+      
+                $('.toPic').click(function(e) {
+           
+                    var img = Canvas2Image.convertToImage(canvas, canvasWidth, canvasHeight);
+                
+                    $(".toPic").after(img);           
+                    
+                });
+
+
+            });
+        });
+
+        $('#save').click(function(e) {
+                        let type = $('#sel').val(); 
+                        let w = $('#imgW').val();
+                        let h = $('#imgH').val(); 
+                        let f = $('#imgFileName').val(); 
+                        w = (w === '') ? imageCanvas.width : w; 
+                        h = (h === '') ? imageCanvas.height : h;
+                        
+                        Canvas2Image.saveAsImage(imageCanvas, w, h, type, f);
+                    });
+    </script>
+</body>
+
+</html>
